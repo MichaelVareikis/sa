@@ -258,6 +258,7 @@ cat << EOF
 # This environment variables appended to your ~/.bashrc, relogin or execute source ~/.bashrc to interract with docker
 ####################
 EOF
+[ -e /var/lib/systemd/linger/ubuntu ] && echo "linger enabled for user $USER" || echo "WARNING: Linger wasn't enabled for user $USER"
 MOF
 
 bash makeself.sh --notemp docker_tmp/ docker_rootless_offline.sh "" bash ./docker_install.sh
