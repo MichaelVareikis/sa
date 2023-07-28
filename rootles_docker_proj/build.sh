@@ -1,6 +1,6 @@
 #!/bin/bash
 set -xe
-[ `id -u` == 0 ] && { echo "Run as non root user"; exit 0; }
+[ -z $CI ] && [ `id -u` == 0 ] && { echo "Run as non root user"; exit 0; }
 wget -O makeself.run 'https://github.com/megastep/makeself/releases/download/release-2.5.0/makeself-2.5.0.run'
 bash makeself.run --target makeself
 cd makeself
@@ -249,6 +249,15 @@ do_install() {
 
 do_install "$@"
 loginctl enable-linger $USER
+cat << EOF | tee -a ~/.bashrc
+export PATH=${DOCKER_BIN}:$PATH 
+export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+EOF
+cat << EOF 
+#####################
+# This environment variables appended to your ~/.bashrc, relogin or execute source ~/.bashrc to interract with docker
+####################
+EOF
 MOF
 
 bash makeself.sh --notemp docker_tmp/ docker_rootless_offline.sh "" bash ./docker_install.sh
