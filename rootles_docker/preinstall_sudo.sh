@@ -13,5 +13,5 @@ if [ $ID == "rhel" ]; then
     sudo dnf install -y fuse-overlayfs iptables
 fi
 
-modules=( "ip_tables" "iptable_nat" "nf_conntrack_ipv4" "nf_nat_ipv4" "nf_nat" )
+modules=( "ip_tables" "iptable_nat" "nf_conntrack" "nf_conntrack_ipv4" "nf_nat_ipv4" "nf_nat" )
 for mod in ${modules[@]}; do sudo modprobe $mod && echo $mod | sudo tee -a /etc/modules-load.d/modules.conf ||:; done
