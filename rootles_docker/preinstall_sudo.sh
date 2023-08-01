@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+[ `id -u` == 0 ] || { echo "Run as non root user"; exit 1; }
 source /etc/os-release
 if [ $ID == "ubuntu" ]; then
     echo "Detected OS - $NAME $VERSION"
