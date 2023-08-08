@@ -59,6 +59,8 @@ while (($#)); do
 shift
 done
 [ -z $DOCKER_BIN ] && { echo "Provide --docker-bin /somepath"; exit; }
+[ -d $DOCKER_BIN ] || mkdir -p $DOCKER_BIN
+
 init_vars() {
 	BIN="${DOCKER_BIN:-$HOME/bin}"
 
@@ -257,6 +259,10 @@ cat << EOF
 #####################
 # This environment variables appended to your ~/.bashrc, relogin or execute source ~/.bashrc to interract with docker
 ####################
+EOF
+cat << EOF > ${DOCKER_BIN}/docker_path
+export PATH=${DOCKER_BIN}:\$PATH 
+export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
 EOF
 [ -e /var/lib/systemd/linger/$USER ] && echo "linger enabled for user $USER" || echo "WARNING: Linger wasn't enabled for user $USER"
 MOF
